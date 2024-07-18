@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  currency_updater:
+    build: ./currency_updater
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+
+  telegram_bot:
+    build: ./telegram_bot
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - TELEGRAM_BOT_TOKEN=your_telegram_bot_token
